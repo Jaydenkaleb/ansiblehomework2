@@ -1,0 +1,61 @@
+#Play 1
+- name: Setting up apache on amazon linux servers
+  hosts: linux-servers
+
+  task:
+    - name: Upgrade all packages #yum update -y
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
+    - name: Install the latest version of Apache #yum install httpd -y
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+    - name: Start service httpd, if not started #systemctl start httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+    - name: Enable service httpd at service launch #systemctl enable httpd
+      ansible.builtin.service:
+        name: httpd
+        enabled: yes
+    - name: Install git
+      yum:
+        name: git
+        state: present
+        update_cache: yes
+    - name: copy index.html file from the controller to the nodes at /var/www/html/ #echo content
+      ansible.builtin.copy:
+        src:  /root/web/index.html
+        dest: /var/www/html/
+
+#Play 2
+
+- name: Setting up apache on ubuntu webservers
+  hosts: ubuntu-servers
+  task:
+    - name: Update all packages to their latest version #yum update -y
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+    - name: Install  theh latest version of apache #yum install httpd -y 
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+    - name: Start service httpd, if not started #systemctl start httpd
+      ansible.builtin.service:
+        name: apache2
+        state: started
+    - name: Enable service httpd at service launch #systemctl enable httpd
+      ansible.builtin.service:
+        name: apache2
+        enabled: yes
+    - name: Install git
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+    - name: copy index.html file from the controller to the nodes at /var/www/html/ #echo content
+      ansible.builtin.copy: 
+        src: /root/index.html
+        dest: /var/www/html/
