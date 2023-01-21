@@ -1,8 +1,6 @@
-#Play 1
-- name: Setting up apache on amazon linux servers
-  hosts: linux-servers
-
-  tasks:
+ - name: Setting up apache on amazon linux servers
+   hosts: linux-servers
+   tasks:
     - name: Upgrade all packages #yum update -y
       ansible.builtin.yum:
         name: '*'
@@ -28,6 +26,10 @@
       ansible.builtin.copy:
         src:  /root/web/index.html
         dest: /var/www/html/
+
+    - name: Prints this message ot runtime of the servers
+      ansible.builtin.debug:
+        msg: print the name tebo
 
 #Play 2
 
@@ -59,3 +61,6 @@
       ansible.builtin.copy: 
         src: /root/index.html
         dest: /var/www/html/
+    - name: Print this message at run time of the servers
+      ansible.builtin.debug:
+        msg: print the name sunita
