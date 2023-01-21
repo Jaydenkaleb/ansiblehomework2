@@ -1,6 +1,8 @@
- #Play1
+#Play1
  - name: Setting up apache on amazon linux servers
    hosts: linux-servers
+   vars:
+    password_used: 123456654321
    tasks:
     - name: Upgrade all packages #yum update -y
       ansible.builtin.yum:
@@ -27,16 +29,16 @@
       ansible.builtin.copy:
         src:  /root/web/index.html
         dest: /var/www/html/
-
     - name: Prints this message ot runtime of the servers
       ansible.builtin.debug:
-        msg: print the name tebo
+        msg: 
+        - print the name tebo
+        - These servers were built using the password of '{{ password_used }}'. Please retain this for later use.
 
 #Play 2
-
-- name: Setting up apache on ubuntu webservers
-  hosts: ubuntu-servers
-  tasks:
+ - name: Setting up apache on ubuntu webservers
+   hosts: ubuntu-servers
+   tasks:
     - name: Update all packages to their latest version #yum update -y
       ansible.builtin.apt:
         name: "*"
